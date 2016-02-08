@@ -1,17 +1,22 @@
 package br.com.erudio.model;
 
-import java.io.Serializable;
+import java.io.Serializable
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.ForeignKey
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import groovy.transform.EqualsAndHashCode;
 
@@ -67,6 +72,12 @@ class Address implements Serializable {
     @ForeignKey(name="AddressCity")
     @JoinColumn(name = "IdCity", referencedColumnName="IdCity")
     City city;   
+	
+	@ManyToMany (cascade = CascadeType.ALL)
+	@JsonIgnore
+	@ForeignKey(name="AddressPersonAddress")
+	@JoinTable(name="person_address", joinColumns=@JoinColumn(name="IdAddress"), inverseJoinColumns=@JoinColumn(name="IdPerson"))
+	List<Person> persons;
 
     Address() {
         this.city = new City();

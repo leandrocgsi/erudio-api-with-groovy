@@ -6,7 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -62,15 +63,14 @@ class Person implements Serializable {
     @Column(name = "Permission", length = 36)
     String permission;
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @ForeignKey(name="PersonAddress")
-    @JoinColumn(name="IdAddress", referencedColumnName = "IdAddress")
-    Address address;
-    
     @ManyToOne(optional=false)
     @ForeignKey(name = "PersonGender") 
     @JoinColumn(name="IdGender", referencedColumnName = "IdGender")
     Gender gender;
+	
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "persons")
+	@ForeignKey(name="PersonPersonAddress")
+	List<Address> addresses;
 
     Person() {
         this.gender = new Gender();

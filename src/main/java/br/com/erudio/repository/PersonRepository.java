@@ -12,6 +12,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.erudio.model.Address;
 import br.com.erudio.model.Person;
 
 @Repository
@@ -23,7 +24,22 @@ public class PersonRepository {
 	
 	@Transactional
 	public Person save(Person person) {
-		entityManager.merge(person);
+		Person persistedPerson = entityManager.merge(person);
+		for (Address address : person.getAddresses()) {
+			ArrayList<Person> persons = new ArrayList<>();
+			persons.add(persistedPerson);
+			address.setPersons(persons);
+			if (address.getIdAddress() == null) {
+				entityManager.persist(address);
+			} else {
+				/*Query query = entityManager.createNativeQuery("Address.findAllPersonsByAddress").setParameter(1, address.getIdAddress());
+				@SuppressWarnings("unchecked")
+				ArrayList<Person> personsRelated = (ArrayList<Person>) query.getResultList();
+				personsRelated.add(persistedPerson);
+				address.setPersons(personsRelated);*/
+				entityManager.merge(address);
+			}
+		}
 		return person;
 	}
 
@@ -57,7 +73,8 @@ public class PersonRepository {
 	
 	public List<Person> findAll() {
 		try {
-			return (List<Person>) entityManager.createNamedQuery("Person.findAllPersons", Person.class).getResultList();
+			List<Person> persons = (List<Person>) entityManager.createNamedQuery("Person.findAllPersons", Person.class).getResultList();
+			return persons;
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return new ArrayList<Person>();

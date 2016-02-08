@@ -64,6 +64,7 @@ class JpaConfig implements TransactionManagementConfigurer {
         entityManagerFactoryBean.setPackagesToScan("br.com.erudio");
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactoryBean.setMappingResources(
+				"namedQueries/Address.xml",
 				"namedQueries/City.xml",
 				"namedQueries/Greeting.xml",
 				"namedQueries/Person.xml",
