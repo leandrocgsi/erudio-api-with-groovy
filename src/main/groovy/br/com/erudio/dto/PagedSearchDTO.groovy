@@ -1,4 +1,8 @@
-package br.com.erudio.dto;
+package br.com.erudio.dto
+
+import javax.persistence.Query
+
+import br.com.erudio.model.Person
 
 class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
@@ -39,5 +43,26 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
 	String getOrderBy(String alias) {
 		" order by ${alias}.${sortFields} ${sortDirections}";
+	}
+	
+	String getParameters(String alias) {
+		String query = " where ";
+		for (Map.Entry<String, Object> entry : filters) {
+			if (entry.getKey() && entry.getValue()) {
+				String key = entry.getKey();
+				query + "${alias}." + key + " = " + key + " and ";
+			}
+		}
+		return query;
+	}
+	
+	void setFiltersParameters(Query query, PagedSearchDTO<Person> person) {
+		for (Map.Entry<String, Object> entry : filters) {
+			if (entry.getKey() && entry.getValue()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				query.setParameter("${key}", value);
+			}
+		}
 	}
 }
