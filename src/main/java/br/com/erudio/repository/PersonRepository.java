@@ -9,7 +9,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
