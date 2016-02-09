@@ -9,9 +9,11 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.erudio.dto.PagedSearchDTO;
 import br.com.erudio.model.Address;
 import br.com.erudio.model.Person;
 
@@ -89,4 +91,60 @@ public class PersonRepository {
 			return null;
 		}
 	}
+
+	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
+        Long total = getTotalFindPerson(person);
+        @SuppressWarnings("unchecked")
+		List<Person> perfilAcessos = getQueryFindPersons(person).getResultList();
+        
+        person.setList(perfilAcessos);
+        person.setTotalResults(total.intValue());
+        return person;
+    }
+    
+    private Query getQueryFindPersons(PagedSearchDTO<Person> person) {
+        String jpql = getHqlFindPerson(person, "p");
+        
+        StringBuilder sbJpql = new StringBuilder(jpql);
+        sbJpql.append(" order by ")
+        .append("p").append(".")
+        .append(person.getSortFields())
+        .append(" ")
+        .append(person.getSortDirections());
+        
+        Query query = entityManager.createQuery(sbJpql.toString());
+        
+        setFiltersFindPerson(query, person);
+        if (person.getCurrentPage() != null) query.setFirstResult((person.getCurrentPage() - 1) * person.getPageSize());
+        else person.setCurrentPage(0);
+        if (person.getPageSize() != null) query.setMaxResults(person.getPageSize());
+        else person.setPageSize(0);
+        return query;
+    }
+
+	private Long getTotalFindPerson(PagedSearchDTO<Person> person) {
+    	Query query = entityManager.createQuery("select count(*) from Person");
+    	setFiltersFindPerson(query, person);
+    	Long count = (Long)query.getSingleResult();
+        return count;
+    }
+    
+    private String getHqlFindPerson(PagedSearchDTO<Person> person, String retorno) {
+        String filterName = person.getFilters().get("name").toString();
+        StringBuilder jpql = new StringBuilder();
+        
+        jpql.append("select ").append(retorno).append(" from Person p");
+        
+        String filter = " where ";
+        if (!StringUtils.isEmpty(filterName)) {
+            jpql.append(filter).append("p.name = :name");
+            filter = " and ";
+        }
+        return jpql.toString();
+    }
+    
+    private void setFiltersFindPerson(Query query, PagedSearchDTO<Person> person) {
+        String filterName = person.getFilters().get("name").toString();
+        if (!StringUtils.isEmpty(filterName)) query.setParameter("name", filterName);
+    }
 }

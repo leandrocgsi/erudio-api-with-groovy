@@ -1,29 +1,20 @@
 package br.com.erudio.model;
 
-import java.io.Serializable
+import groovy.transform.EqualsAndHashCode
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.Id
 import javax.persistence.JoinColumn
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
+import javax.persistence.Table
 
 import org.hibernate.annotations.ForeignKey
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import groovy.transform.EqualsAndHashCode;
-
-import br.com.erudio.model.AddressType;
-import br.com.erudio.model.City;
-import br.com.erudio.model.PublicAreaType;
-import br.com.erudio.model.State;
+import com.fasterxml.jackson.annotation.JsonIgnore
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -73,10 +64,9 @@ class Address implements Serializable {
     @JoinColumn(name = "IdCity", referencedColumnName="IdCity")
     City city;   
 	
-	@ManyToMany (cascade = CascadeType.ALL)
 	@JsonIgnore
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "addresses")
 	@ForeignKey(name="AddressPersonAddress")
-	@JoinTable(name="person_address", joinColumns=@JoinColumn(name="IdAddress"), inverseJoinColumns=@JoinColumn(name="IdPerson"))
 	List<Person> persons;
 
     Address() {
