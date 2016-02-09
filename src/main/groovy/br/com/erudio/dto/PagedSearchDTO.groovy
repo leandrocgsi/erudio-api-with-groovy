@@ -36,4 +36,8 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	Integer getStart() {
 		return Integer.valueOf((getCurrentPage().intValue() - 1) * getPageSize().intValue());
 	}
+	
+	String getOrderBy(String alias) {
+		" order by ${alias}.${sortFields} ${sortDirections}";
+	}
 }

@@ -105,14 +105,7 @@ public class PersonRepository {
     private Query getQueryFindPersons(PagedSearchDTO<Person> person) {
         String jpql = getHqlFindPerson(person, "p");
         
-        StringBuilder sbJpql = new StringBuilder(jpql);
-        sbJpql.append(" order by ")
-        .append("p").append(".")
-        .append(person.getSortFields())
-        .append(" ")
-        .append(person.getSortDirections());
-        
-        Query query = entityManager.createQuery(sbJpql.toString());
+		Query query = entityManager.createQuery(jpql + person.getOrderBy("p"));
         
         setFiltersFindPerson(query, person);
         if (person.getCurrentPage() != null) query.setFirstResult((person.getCurrentPage() - 1) * person.getPageSize());
