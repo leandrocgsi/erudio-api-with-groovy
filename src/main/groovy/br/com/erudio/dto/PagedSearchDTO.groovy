@@ -82,11 +82,11 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 
 	String getBaseSelect(String alias, String entityName) {
-		"select ${alias} from ${entityName} ${alias} "
+		"select ${alias} from ${entityName} ${alias} ";
 	}
 
 	String getBaseSelectCount(String alias, String entityName) {
-		"select count(*) from ${entityName} ${alias} "
+		"select count(*) from ${entityName} ${alias} ";
 	}
 	
 	Long getTotal(EntityManager entityManager, String alias, String entityName) {
