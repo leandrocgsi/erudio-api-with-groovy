@@ -74,7 +74,7 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 	
 	Boolean isNotEmpty(Map.Entry<String, Object> entry) {
-		entry.getKey() && entry.getValue()
+		entry.getKey() && entry.getValue();
 	}
 	
 	String getSelectHql(String alias, String entityName) {
@@ -109,7 +109,7 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	PagedSearchDTO<T> getPagedSearch(EntityManager entityManager, String alias, String entityName) {
 		Query searchQuery = getSearchQuery(entityManager, alias, entityName);
 		setList(searchQuery.getResultList());
-		setTotalResults(getTotal(entityManager, alias, entityName));
+		setTotalResults(getTotal(entityManager, alias, entityName).intValue());
+		return this;
 	}
-	
 }

@@ -93,21 +93,10 @@ public class PersonRepository {
 
 	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
 		try {
-			return getPagedSearch(person, "p", "Person");
+			return person.getPagedSearch(entityManager, "p", "Person");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return null;
 		}
     }
-
-	private PagedSearchDTO<Person> getPagedSearch(PagedSearchDTO<Person> person, String alias, String entityName) {
-		Long total = person.getTotal(entityManager, alias, entityName);
-        Query searchQuery = person.getSearchQuery(entityManager, alias, entityName);
-		@SuppressWarnings("unchecked")
-		List<Person> perfilAcessos = searchQuery.getResultList();
-        
-        person.setList(perfilAcessos);
-        person.setTotalResults(total.intValue());
-        return person;
-	}
 }
