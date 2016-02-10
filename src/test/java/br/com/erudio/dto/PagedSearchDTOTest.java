@@ -39,12 +39,13 @@ public class PagedSearchDTOTest {
 	}
 	
 	@Test
-	public void getHqlFindPersonTest() {
+	public void getHQLQueryTest() {
 		String selectWithParameters = "select p from Person p"
 				+ "  where  p.phone = :phone and"
 				+ "  p.name = :name and"
-				+ "  p.email = :email and 1 = 1 ";
-		assertEquals(dto.getSelectHql("p", "Person"), selectWithParameters);
+				+ "  p.email = :email and 1 = 1 "
+				+ " order by p.name asc";
+		assertEquals(dto.getHQLQuery("p", "Person"), selectWithParameters);
 	}
 	
 	@Test

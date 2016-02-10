@@ -77,8 +77,8 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 		entry.getKey() && entry.getValue();
 	}
 	
-	String getSelectHql(String alias, String entityName) {
-		getBaseSelect(alias, entityName) + getWhereAndParameters(alias);
+	String getHQLQuery(String alias, String entityName) {
+		getBaseSelect(alias, entityName) + getWhereAndParameters(alias) + getOrderBy(alias);
 	}
 
 	String getBaseSelect(String alias, String entityName) {
@@ -97,10 +97,7 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 	
 	Query getSearchQuery(EntityManager entityManager, String alias, String entityName) {
-		String stringQuery = getSelectHql(alias, entityName) + getOrderBy(alias);
-		
-		Query query = entityManager.createQuery(stringQuery);
-		
+		Query query = entityManager.createQuery(getHQLQuery(alias, entityName));
 		setParameters(query);
 		query.setFirstResult((getCurrentPage() - 1) * getPageSize());
 		query.setMaxResults(getPageSize());
