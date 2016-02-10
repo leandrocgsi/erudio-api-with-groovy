@@ -9,7 +9,6 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,51 +92,22 @@ public class PersonRepository {
 	}
 
 	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
-        Long total = getTotalFindPerson(person);
-        @SuppressWarnings("unchecked")
-		List<Person> perfilAcessos = getQueryFindPersons(person).getResultList();
+		try {
+			return getPagedSearch(person, "p", "Person");
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			return null;
+		}
+    }
+
+	private PagedSearchDTO<Person> getPagedSearch(PagedSearchDTO<Person> person, String alias, String entityName) {
+		Long total = person.getTotal(entityManager, alias, entityName);
+        Query searchQuery = person.getSearchQuery(entityManager, alias, entityName);
+		@SuppressWarnings("unchecked")
+		List<Person> perfilAcessos = searchQuery.getResultList();
         
         person.setList(perfilAcessos);
         person.setTotalResults(total.intValue());
         return person;
-    }
-    
-    private Query getQueryFindPersons(PagedSearchDTO<Person> person) {
-        String jpql = getHqlFindPerson(person, "p");
-        
-		Query query = entityManager.createQuery(jpql + person.getOrderBy("p"));
-        
-        setFiltersFindPerson(query, person);
-        if (person.getCurrentPage() != null) query.setFirstResult((person.getCurrentPage() - 1) * person.getPageSize());
-        else person.setCurrentPage(0);
-        if (person.getPageSize() != null) query.setMaxResults(person.getPageSize());
-        else person.setPageSize(0);
-        return query;
-    }
-
-	private Long getTotalFindPerson(PagedSearchDTO<Person> person) {
-    	Query query = entityManager.createQuery("select count(*) from Person");
-    	setFiltersFindPerson(query, person);
-    	Long count = (Long)query.getSingleResult();
-        return count;
-    }
-    
-    private String getHqlFindPerson(PagedSearchDTO<Person> person, String retorno) {
-        String filterName = person.getFilters().get("name").toString();
-        StringBuilder jpql = new StringBuilder();
-        
-        jpql.append("select ").append(retorno).append(" from Person p");
-        
-        String filter = " where ";
-        if (!StringUtils.isEmpty(filterName)) {
-            jpql.append(filter).append("p.name = :name");
-            filter = " and ";
-        }
-        return jpql.toString();
-    }
-    
-    private void setFiltersFindPerson(Query query, PagedSearchDTO<Person> person) {
-        String filterName = person.getFilters().get("name").toString();
-        if (!StringUtils.isEmpty(filterName)) query.setParameter("name", filterName);
-    }
+	}
 }

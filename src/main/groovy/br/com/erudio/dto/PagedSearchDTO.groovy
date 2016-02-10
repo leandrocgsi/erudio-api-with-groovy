@@ -1,8 +1,11 @@
 package br.com.erudio.dto
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
 import javax.persistence.Query
 
-import br.com.erudio.model.Person
+import org.apache.commons.lang.StringUtils
 
 class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
@@ -32,9 +35,19 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 		this.sortDirections = sortDirections;
 		this.filters = filters;
 	}
-
+	
 	PagedSearchDTO(Integer currentPage, String sortFields, String sortDirections) {
 		this(currentPage, Integer.valueOf(10), sortFields, sortDirections);
+	}
+	
+	Integer getCurrentPage(){
+		if (currentPage) return currentPage;
+		return 0;
+	}
+	
+	Integer getPageSize(){
+		if (pageSize) return pageSize;
+		return 0;
 	}
 
 	Integer getStart() {
@@ -45,24 +58,58 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 		" order by ${alias}.${sortFields} ${sortDirections}";
 	}
 	
-	String getParameters(String alias) {
+	String getWhereAndParameters(String alias) {
 		String query = " where ";
+		ArrayList<String> parametros = new ArrayList<>();
 		for (Map.Entry<String, Object> entry : filters) {
-			if (entry.getKey() && entry.getValue()) {
-				String key = entry.getKey();
-				query + "${alias}." + key + " = " + key + " and ";
-			}
+			if (isNotEmpty(entry)) parametros.add("${alias}.${entry.getKey()} = :${entry.getKey()} and ");
 		}
-		return query;
+		return query + " " + parametros.join(" ") + "1 = 1 ";
 	}
 	
-	void setFiltersParameters(Query query, PagedSearchDTO<Person> person) {
+	void setParameters(Query query) {
 		for (Map.Entry<String, Object> entry : filters) {
-			if (entry.getKey() && entry.getValue()) {
-				String key = entry.getKey();
-				String value = entry.getValue();
-				query.setParameter("${key}", value);
-			}
+			if (isNotEmpty(entry)) query.setParameter("${entry.getKey()}", entry.getValue());
 		}
 	}
+	
+	Boolean isNotEmpty(Map.Entry<String, Object> entry) {
+		entry.getKey() && entry.getValue()
+	}
+	
+	String getSelectHql(String alias, String entityName) {
+		getBaseSelect(alias, entityName) + getWhereAndParameters(alias);
+	}
+
+	String getBaseSelect(String alias, String entityName) {
+		"select ${alias} from ${entityName} ${alias} "
+	}
+
+	String getBaseSelectCount(String alias, String entityName) {
+		"select count(*) from ${entityName} ${alias} "
+	}
+	
+	Long getTotal(EntityManager entityManager, String alias, String entityName) {
+		String select = getBaseSelectCount(alias, entityName) + getWhereAndParameters(alias);
+		Query query = entityManager.createQuery(select);
+		setParameters(query);
+		(Long)query.getSingleResult();
+	}
+	
+	Query getSearchQuery(EntityManager entityManager, String alias, String entityName) {
+		String stringQuery = getSelectHql(alias, entityName) + getOrderBy(alias);
+		
+		Query query = entityManager.createQuery(stringQuery);
+		
+		setParameters(query);
+		query.setFirstResult((getCurrentPage() - 1) * getPageSize());
+		query.setMaxResults(getPageSize());
+	}
+	
+	PagedSearchDTO<T> getPagedSearch(EntityManager entityManager, String alias, String entityName) {
+		Query searchQuery = getSearchQuery(entityManager, alias, entityName);
+		setList(searchQuery.getResultList());
+		setTotalResults(getTotal(entityManager, alias, entityName));
+	}
+	
 }
