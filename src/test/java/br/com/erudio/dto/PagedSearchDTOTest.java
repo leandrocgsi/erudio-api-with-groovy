@@ -21,9 +21,14 @@ public class PagedSearchDTOTest {
 	}
 	
 	@Test
-	public void getBaseSelect() {
+	public void getBaseSelectTest() {
 		String baseSelect = "select p from Person p ";
 		assertEquals(dto.getBaseSelect("p", "Person"), baseSelect);
+	}
+	
+	@Test
+	public void getStartTest() {
+		assertEquals(dto.getStart(), (Integer)0);
 	}
 	
 	@Test
@@ -34,18 +39,36 @@ public class PagedSearchDTOTest {
 	
 	@Test
 	public void getWhereAndParametersTest() {
-		String whereClause = " where  p.phone = :phone and  p.name = :name and  p.email = :email and 1 = 1 ";
+		String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
+		assertEquals(whereClause, dto.getWhereAndParameters("p"));
+	}
+	
+	@Test
+	public void getWhereAndParametersWithBlankStringKeyTest() {
+		Map<String, Object> filters = mockFilters();
+		filters.put("", "LEANDRO");
+		dto.setFilters(filters);
+		String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
+		assertEquals(dto.getWhereAndParameters("p"), whereClause);
+	}
+
+	@Test
+	public void getWhereAndParametersWithBlankStringValueTest() {
+		Map<String, Object> filters = new HashMap<String, Object>();
+		filters.put("name", "");
+		dto.setFilters(filters);
+		String whereClause = " where 1 = 1 ";
 		assertEquals(dto.getWhereAndParameters("p"), whereClause);
 	}
 	
 	@Test
 	public void getHQLQueryTest() {
 		String selectWithParameters = "select p from Person p"
-				+ "  where  p.phone = :phone and"
-				+ "  p.name = :name and"
-				+ "  p.email = :email and 1 = 1 "
+				+ "  where p.phone = :phone and"
+				+ " p.name = :name and"
+				+ " p.email = :email and 1 = 1 "
 				+ " order by p.name asc";
-		assertEquals(dto.getHQLQuery("p", "Person"), selectWithParameters);
+		assertEquals(selectWithParameters, dto.getHQLQuery("p", "Person"));
 	}
 	
 	@Test
@@ -90,6 +113,9 @@ public class PagedSearchDTOTest {
 		filters.put("email", "a@b.c");
 		filters.put("phone", "12345678998");
 		filters.put("cpf", null);
+		filters.put("religion", null);
+		filters.put("cpf", null);
+		filters.put(null, "COSTA");
 		return filters;
 	}
 

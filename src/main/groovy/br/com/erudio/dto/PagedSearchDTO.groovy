@@ -7,6 +7,7 @@ import javax.persistence.Query
 
 import org.apache.commons.lang.StringUtils
 
+
 class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -41,17 +42,15 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 	
 	Integer getCurrentPage(){
-		if (currentPage) return currentPage;
-		return 0;
+		currentPage ?: 0;
 	}
 	
 	Integer getPageSize(){
-		if (pageSize) return pageSize;
-		return 0;
+		pageSize ?: 0;
 	}
 
 	Integer getStart() {
-		return Integer.valueOf((getCurrentPage().intValue() - 1) * getPageSize().intValue());
+		Integer.valueOf((getCurrentPage() - 1.intValue()) * getPageSize());
 	}
 	
 	String getOrderBy(String alias) {
@@ -59,22 +58,18 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 	
 	String getWhereAndParameters(String alias) {
-		String query = " where ";
-		ArrayList<String> parametros = new ArrayList<>();
-		for (Map.Entry<String, Object> entry : filters) {
-			if (isNotEmpty(entry)) parametros.add("${alias}.${entry.getKey()} = :${entry.getKey()} and ");
-		}
-		return query + " " + parametros.join(" ") + "1 = 1 ";
+		def query = ' where ';
+		filters.each{ k, v -> (isEmpty(k, v)) ? query = query + "${alias}.${k} = :${k} and " : "" }
+		query + '1 = 1 ';
 	}
 	
 	void setParameters(Query query) {
-		for (Map.Entry<String, Object> entry : filters) {
-			if (isNotEmpty(entry)) query.setParameter("${entry.getKey()}", entry.getValue());
-		}
+		filters.each{ k, v -> (isEmpty(k, v)) query.setParameter("${k}", v)}
 	}
 	
-	Boolean isNotEmpty(Map.Entry<String, Object> entry) {
-		entry.getKey() && entry.getValue();
+	
+	Boolean isEmpty(String k, Object v) {
+		k && v && v.toString();
 	}
 	
 	String getHQLQuery(String alias, String entityName) {
