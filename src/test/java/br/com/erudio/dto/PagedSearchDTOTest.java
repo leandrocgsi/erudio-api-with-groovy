@@ -2,9 +2,11 @@ package br.com.erudio.dto;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,6 +74,14 @@ public class PagedSearchDTOTest {
 	}
 	
 	@Test
+	public void getHQLQueryTestWithDTOFromJSON() {
+		String selectWithParameters = "select p from Person p"
+				+ "  where 1 = 1 "
+				+ " order by p.name asc";
+		assertEquals(selectWithParameters, mockDTOFromJSON().getHQLQuery("p", "Person"));
+	}
+	
+	@Test
 	public void getOrderByTest() {
 		assertEquals(dto.getOrderBy("p"), " order by p.name asc");
 	}
@@ -96,6 +106,17 @@ public class PagedSearchDTOTest {
 	public void getCurrentPageNullTest() {
 		dto.setCurrentPage(null);
 		assertEquals(dto.getCurrentPage(), (Integer)0);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public PagedSearchDTO<Person> mockDTOFromJSON(){
+		PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<>();
+		try {
+			dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchDTO.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return dtoFromJSON;
 	}
 	
 	public PagedSearchDTO<Person> mockDTO(){

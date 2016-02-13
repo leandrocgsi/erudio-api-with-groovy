@@ -64,12 +64,12 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 	}
 	
 	void setParameters(Query query) {
-		filters.each{ k, v -> (isEmpty(k, v)) query.setParameter("${k}", v)}
+		filters.each{ k, v -> (isEmpty(k, v)) ? query.setParameter("${k}", v) : ""}
 	}
 	
 	
 	Boolean isEmpty(String k, Object v) {
-		k && v && v.toString();
+		k && v && !v.toString().empty;
 	}
 	
 	String getHQLQuery(String alias, String entityName) {
