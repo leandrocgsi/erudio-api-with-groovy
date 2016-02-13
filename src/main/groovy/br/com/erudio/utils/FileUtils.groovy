@@ -4,10 +4,8 @@ class FileUtils {
 
 	def copyFile(String filePath, String fileDestinationPath){
 		def fileSourceStream = new File(filePath).newDataInputStream()
-		def fileDestinationStream = new File(fileDestinationPath).newDataOutputStream()
-		fileDestinationStream << fileSourceStream
+		writeFile(fileDestinationPath, fileSourceStream);
 		fileSourceStream.close()
-		fileDestinationStream.close()
 	}
 	
 	def printFile(String filePath){
@@ -18,6 +16,12 @@ class FileUtils {
 		def fileSourceStream = new File(filePath).newDataInputStream();
 		fileSourceStream.getText();
 		fileSourceStream.close()
+	}
+	
+	def writeFile(String fileDestinationPath, byte[] stream){
+		def fileDestinationStream = new File(fileDestinationPath).newDataOutputStream();
+		fileDestinationStream << stream;
+		fileDestinationStream.close();
 	}
 	
 	
