@@ -10,6 +10,4 @@ public class EMailConfigs {
 	boolean ssl;
 	String subject;
 	String message;
-	
-	EMailConfigs() { }
 }

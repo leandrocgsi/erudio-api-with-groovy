@@ -2,6 +2,7 @@ package br.com.erudio.utils.email
 
 import java.io.File;
 import java.io.Serializable;
+import javax.mail.internet.InternetAddress
 
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
@@ -46,7 +47,15 @@ class EmailUtils implements Serializable {
 		email = getEmailSession(configs);
 		email.setSubject(configs.getSubject());
 		email.setMsg(configs.getMessage());
-		email.addTo(to);
+		email.setTo(getRecipients(to));
 		return email;
+	}
+	
+	def ArrayList getRecipients(String to) {
+		def tosWithoutSpaces = to.replaceAll("\\s","");;
+		StringTokenizer tok = new StringTokenizer(tosWithoutSpaces,";");
+		ArrayList recipients = new ArrayList();
+		while(tok.hasMoreElements()) recipients.add(new InternetAddress(tok.nextElement().toString()));
+		return recipients;
 	}
 }
