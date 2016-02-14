@@ -52,7 +52,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 			return entityManager.createNamedQuery("Person.findPersonById", Person.class).setParameter("idPerson", id).getSingleResult();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
-			return null;
+			return new Person();
 		}
 	}
 

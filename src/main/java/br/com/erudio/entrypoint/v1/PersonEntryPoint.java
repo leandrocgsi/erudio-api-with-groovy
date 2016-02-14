@@ -18,7 +18,6 @@ import com.wordnik.swagger.annotations.Api;
 
 import br.com.erudio.dto.PagedSearchDTO;
 import br.com.erudio.model.Person;
-import br.com.erudio.repository.implementations.PersonRepository;
 import br.com.erudio.repository.interfaces.IPersonRepository;
 
 @Controller

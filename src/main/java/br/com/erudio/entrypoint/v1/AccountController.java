@@ -13,18 +13,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.com.erudio.account.Account;
-import br.com.erudio.repository.AccountRepository;
+import br.com.erudio.repository.interfaces.IAccountRepository;
 
 @Controller
 @Secured("ROLE_USER")
 class AccountController {
 
-    private AccountRepository accountRepository;
-
-    @Autowired
-    public AccountController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
+	@Autowired
+    private IAccountRepository accountRepository;
 
     @RequestMapping(value = "account/current", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)

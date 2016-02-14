@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import br.com.erudio.model.City;
-import br.com.erudio.repository.CityRepository;
-
 import com.wordnik.swagger.annotations.Api;
+
+import br.com.erudio.model.City;
+import br.com.erudio.repository.interfaces.ICityRepository;
 
 @Controller
 @Secured("ROLE_USER")
@@ -25,12 +25,8 @@ import com.wordnik.swagger.annotations.Api;
 @RequestMapping("/api/v1/city")
 class CityEntryPoint {
 
-    private CityRepository cityRepository;
-
-    @Autowired
-    public CityEntryPoint(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
-    }
+	@Autowired
+    private ICityRepository cityRepository;
     
 	@RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
@@ -47,7 +43,7 @@ class CityEntryPoint {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody ResponseEntity<Void> delete(@PathVariable Integer id) {
-		cityRepository.delete(id);
+		cityRepository.deleteById(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 

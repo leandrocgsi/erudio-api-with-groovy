@@ -17,7 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import br.com.erudio.repository.AccountRepository;
+import br.com.erudio.repository.implementations.AccountRepository;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {

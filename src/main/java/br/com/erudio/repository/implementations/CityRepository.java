@@ -1,9 +1,7 @@
-package br.com.erudio.repository;
+package br.com.erudio.repository.implementations;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
@@ -12,28 +10,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.erudio.model.City;
+import br.com.erudio.repository.generic.GenericRepository;
+import br.com.erudio.repository.interfaces.ICityRepository;
 
 @Repository
 @Transactional(readOnly = true)
-public class CityRepository {
-	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@Transactional
-	public City save(City city) {
-		entityManager.persist(city);
-		return city;
-	}
+public class CityRepository extends GenericRepository<City> implements ICityRepository{
 
-	@Transactional
-	public City update(City city) {
-		entityManager.merge(city);
-		return city;
-	}
+	private static final long serialVersionUID = 1L;
 
+	public CityRepository() {
+		super(City.class);
+	}
+	
+	@Override
 	@Transactional
-	public void delete(Integer id) {
+	public void deleteById(Integer id) {
         try {
         	Query query = entityManager.createNamedQuery("City.deleteCityById").setParameter("idCity", id);
             query.executeUpdate(); 

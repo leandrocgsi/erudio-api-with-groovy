@@ -1,10 +1,8 @@
-package br.com.erudio.repository;
+package br.com.erudio.repository.implementations;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import org.springframework.stereotype.Repository;
@@ -15,21 +13,21 @@ import br.com.erudio.model.AddressType;
 import br.com.erudio.model.City;
 import br.com.erudio.model.PublicAreaType;
 import br.com.erudio.model.State;
+import br.com.erudio.repository.generic.GenericRepository;
+import br.com.erudio.repository.interfaces.IAddressRepository;
 
 @Repository
 @Transactional(readOnly = true)
-public class AddressRepository {
-	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@Transactional
-	public Address save(Address address) {
-		entityManager.persist(address);
-		return address;
+public class AddressRepository extends GenericRepository<Address> implements IAddressRepository{
+
+	private static final long serialVersionUID = 1L;
+
+	public AddressRepository() {
+		super(Address.class);
 	}
 	
-	public Address findAddressById(Integer id) {
+	@Override
+	public Address findById(Integer id) {
 		try {
 			return mockAddress();
 		} catch (PersistenceException e) {
@@ -38,7 +36,8 @@ public class AddressRepository {
 		} 
 	}
 	
-	public List<Address> findAllAddress() {
+	@Override
+	public List<Address> findAll() {
 		List<Address> addresses = new ArrayList<Address>();
 		for (int i = 0; i < 10; i++) {
 			addresses.add(mockAddress());
