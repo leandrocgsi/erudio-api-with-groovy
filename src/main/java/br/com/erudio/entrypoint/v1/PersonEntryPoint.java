@@ -18,7 +18,8 @@ import com.wordnik.swagger.annotations.Api;
 
 import br.com.erudio.dto.PagedSearchDTO;
 import br.com.erudio.model.Person;
-import br.com.erudio.repository.PersonRepository;
+import br.com.erudio.repository.implementations.PersonRepository;
+import br.com.erudio.repository.interfaces.IPersonRepository;
 
 @Controller
 @Secured("ROLE_USER")
@@ -26,12 +27,8 @@ import br.com.erudio.repository.PersonRepository;
 @RequestMapping("/api/v1/person")
 class PersonEntryPoint {
 
-    private PersonRepository personRepository;
-
-    @Autowired
-    public PersonEntryPoint(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
+	@Autowired
+	private IPersonRepository personRepository;
     
 	@RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
@@ -48,7 +45,7 @@ class PersonEntryPoint {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
     public @ResponseBody ResponseEntity<Void> delete(@PathVariable Integer id) {
-		personRepository.delete(id);
+		personRepository.deleteById(id);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
