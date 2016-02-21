@@ -5,34 +5,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
+import com.mangofactory.swagger.models.dto.ApiInfo;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
-import com.wordnik.swagger.model.ApiInfo;
 
 @Configuration
 @EnableSwagger
 public class SwaggerConfig {
-	
-	private SpringSwaggerConfig springSwaggerConfig;
-	
+
 	@Autowired
-	public void setSpringSwaggerConfig(SpringSwaggerConfig springSwaggerConfig) {
-		this.springSwaggerConfig = springSwaggerConfig;
-	}
-	
+	private SpringSwaggerConfig springSwaggerConfig;
+
 	@Bean
-	public SwaggerSpringMvcPlugin customImplementation() {
-		return new SwaggerSpringMvcPlugin(this.springSwaggerConfig).apiInfo(apiInfo()).includePatterns("/erudio/.*");
+	public SwaggerSpringMvcPlugin groupOnePlugin() {
+		return new SwaggerSpringMvcPlugin(springSwaggerConfig).
+				apiInfo(apiInfo()).
+				includePatterns("/api/.*").
+				swaggerGroup("erudio");
 	}
-	
+
 	private ApiInfo apiInfo() {
-		ApiInfo apiInfo = new ApiInfo(
-				"Erudio API",
-				"API for Erudio",
-				"Erudio API terms of service",
-				"erudio@gmail.com",
-				"Erudio API Licence Type",
-				"Erudio API License URL");
+		
+		ApiInfo apiInfo = new ApiInfo("ERUDIO API",
+				"ERUDIO API's connecting world",
+				"ERUDIO API's terms of service",
+				"erudio_api@gmail.com",
+				"ERUDIO API",
+				"http://erudio.com.br");
 		return apiInfo;
 	}
 }

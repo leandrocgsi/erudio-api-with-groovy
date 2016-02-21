@@ -150,17 +150,25 @@
             <artifactId>guava</artifactId>
         </dependency>
         
+        
+        
+        
+        
+   		<!-- api documents -->
+		
 		<dependency>
 			<groupId>com.mangofactory</groupId>
 			<artifactId>swagger-springmvc</artifactId>
-			<version>0.8.8</version>
+			<version>1.0.0</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.ajar</groupId>
 			<artifactId>swagger-spring-mvc-ui</artifactId>
 			<version>0.4</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.tomcat.embed</groupId>
+    		<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
         
         <!-- Test -->
@@ -262,6 +270,12 @@
 			<artifactId>commons-email</artifactId>
 			<version>1.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>
         
         <!-- COMPONENT TEST DEPENDENCIES -->
         
@@ -271,7 +285,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-    <repositories>
+    <repositories>	
+		<repository>
+			<id>codehaus-mule-repo</id>
+			<name>codehaus-mule-repo</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+		</repository>
 		<repository>
 			<id>oss-jfrog-artifactory</id>
 			<name>oss-jfrog-artifactory-releases</name>
