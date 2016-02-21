@@ -17,58 +17,63 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
-import br.com.erudio.model.City;
-import br.com.erudio.repository.interfaces.ICityRepository;
+import br.com.erudio.model.Person;
+import br.com.erudio.repository.interfaces.IPersonRepository;
 
 @Controller
-//@Secured("ROLE_USER")
-@Api(value = "city", description = "Exposes endpoints of service City.")
-@RequestMapping("/api/v1/city")
-class CityEntryPoint {
+@Secured("ROLE_USER")
+@Api(value = "person", description = "Exposes endpoints of service Person.")
+@RequestMapping("/api/v1/person")
+class PersonEntryPoint {
 
 	@Autowired
-    private ICityRepository cityRepository;
+	private IPersonRepository personRepository;
     
 	@RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "POST", value = "Saving a city")
-	public @ResponseBody City save(@RequestBody City city) {
-		return cityRepository.save(city);
+	@ApiOperation(httpMethod = "POST", value = "Insert a new person")
+	public @ResponseBody Person save(@RequestBody Person person) {
+		return personRepository.save(person);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "PUT", value = "Updating a city")
-	public @ResponseBody City update(@RequestBody City city) {
-		return cityRepository.update(city);
+	@ApiOperation(httpMethod = "PUT", value = "Update person")
+	public @ResponseBody Person update(@RequestBody Person person) {
+		return personRepository.update(person);
 	}
     
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "DELETE", value = "Deleting a city by id")
+	@ApiOperation(httpMethod = "DELETE", value = "Delete persons by id")
     public @ResponseBody ResponseEntity<Void> delete(@PathVariable Integer id) {
-		cityRepository.deleteById(id);
-		return new ResponseEntity<Void>(HttpStatus.OK);
+		personRepository.deleteById(id);
+		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "GET", value = "Find a city by id")
-	public @ResponseBody City findById(@PathVariable Integer id) {
-		return cityRepository.findById(id);
+	@ApiOperation(httpMethod = "GET", value = "Find persons by id")
+	public @ResponseBody Person findById(@PathVariable Integer id) {
+		return personRepository.findById(id);
 	}
 	
 	@RequestMapping(value = "/findByName/{name}", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "GET", value = "Find a city by name")
-    public @ResponseBody City findCityByName(@PathVariable String name) {
-        return cityRepository.findByName(name);
+	@ApiOperation(httpMethod = "GET", value = "Find persons by name")
+    public @ResponseBody Person findPersonByName(@PathVariable String name) {
+        return personRepository.findByName(name);
     }
     
 	@RequestMapping(value = "/findAll", method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-	@ApiOperation(httpMethod = "GET", value = "Find all cities")
-    public @ResponseBody List<City> findAll() {
-        return cityRepository.findAll();
+	@ApiOperation(httpMethod = "GET", value = "Find all persons")
+    public @ResponseBody List<Person> findAll() {
+        return personRepository.findAll();
     }
+	
+//	@RequestMapping(value = "/pagedSearch", method = RequestMethod.POST)
+//    public @ResponseBody PagedSearchDTO<Person> buscaPaginada(@RequestBody PagedSearchDTO<Person> person) {
+//		return personRepository.pagedSearch(person);
+//    }
 }

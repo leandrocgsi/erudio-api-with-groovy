@@ -21,7 +21,7 @@ import br.com.erudio.model.City;
 import br.com.erudio.repository.interfaces.ICityRepository;
 
 @Controller
-//@Secured("ROLE_USER")
+@Secured("ROLE_USER")
 @Api(value = "city", description = "Exposes endpoints of service City.")
 @RequestMapping("/api/v1/city")
 class CityEntryPoint {

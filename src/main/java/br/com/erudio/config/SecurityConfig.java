@@ -43,11 +43,12 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            	.antMatchers("/api/v1/**").permitAll()
-            	.antMatchers("/api-docs/**").permitAll()
-                .antMatchers("/", "/favicon.ico", "/resources/**", "/signup").permitAll()
-                .anyRequest().authenticated()
-//                .anyRequest().permitAll()
+            
+//            	.antMatchers("/api/v1/**").permitAll()
+//            	.antMatchers("/api-docs/**").permitAll()
+//                .antMatchers("/", "/favicon.ico", "/sdoc.jsp", "/images/**", "/resources/**", "/signup").permitAll()
+//                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
             .formLogin()
                 .loginPage("/signin")
