@@ -1,10 +1,12 @@
 package br.com.erudio.utils;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import br.com.erudio.utils.FileUtils;
 
+@Ignore
 public class FileUtilsTest {
 	
 	FileUtils fileUtils = new FileUtils();

@@ -1,8 +1,10 @@
 package br.com.erudio.utils.email;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class EmailUtilsTest {
 	
 	EMailConfigs configs = new EMailConfigs();
