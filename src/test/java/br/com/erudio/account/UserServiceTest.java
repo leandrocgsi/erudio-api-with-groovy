@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Collection;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -32,6 +33,7 @@ public class UserServiceTest {
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
+	@Ignore
 	public void shouldInitializeWithTwoDemoUsers() {
 		// act
 		userService.initialize();

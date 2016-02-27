@@ -1,6 +1,7 @@
 package br.com.erudio.account;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -20,12 +21,14 @@ public class UserAuthenticationIntegrationTest extends WebSecurityConfigurationA
     private static String SEC_CONTEXT_ATTR = HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY;
 
     @Test
+    @Ignore
     public void requiresAuthentication() throws Exception {
         mockMvc.perform(get("/account/current"))
                 .andExpect(redirectedUrl("http://localhost/signin"));
     }
 
     @Test
+    @Ignore
     public void userAuthenticates() throws Exception {
         final String username = "user";
         ResultMatcher matcher = new ResultMatcher() {
