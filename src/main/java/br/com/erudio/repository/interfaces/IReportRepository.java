@@ -4,6 +4,6 @@ import java.io.File;;
 
 public interface IReportRepository {
 
-	File makeReport ();
+	File makeReport () throws Exception;
 	
 }

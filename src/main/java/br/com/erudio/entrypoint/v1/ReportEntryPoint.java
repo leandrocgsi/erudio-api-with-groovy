@@ -37,5 +37,6 @@ public class ReportEntryPoint {
 		File file = reportRepository.makeReport();
 		//return Response.ok().entity(file).header("Content-Disposition", "attachment; filename=output.pdf").build();
     	return ResponseEntity.status(HttpStatus.OK).build();
+    	//https://www.google.com.br/webhp?sourceid=chrome-instant&ion=1&espv=2&es_th=1&ie=UTF-8#q=ResponseEntity+with+file+rest+springmvc
     }
 }
