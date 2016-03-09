@@ -1,9 +1,15 @@
 package br.com.erudio.entrypoint.v1;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import org.jfree.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -19,7 +25,6 @@ import com.wordnik.swagger.annotations.ApiResponses;
 
 import br.com.erudio.repository.interfaces.IReportRepository;
 
-
 @Controller
 @Secured("ROLE_USER")
 @RequestMapping("/api/v1/report")
@@ -28,15 +33,20 @@ public class ReportEntryPoint {
 
 	@Autowired
 	private IReportRepository reportRepository;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
+	@ResponseStatus(value = HttpStatus.OK)
 	@ApiOperation(value = "Building a report in PDF!", notes = "Building a report in PDF!")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 500, message = "Houston we have a problem")})
-    public @ResponseBody ResponseEntity<Void> makeReport() throws Exception {
-		File file = reportRepository.makeReport();
-		//return Response.ok().entity(file).header("Content-Disposition", "attachment; filename=output.pdf").build();
-    	return ResponseEntity.status(HttpStatus.OK).build();
-    	//https://www.google.com.br/webhp?sourceid=chrome-instant&ion=1&espv=2&es_th=1&ie=UTF-8#q=ResponseEntity+with+file+rest+springmvc
-    }
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 500, message = "Houston we have a problem") })
+	public @ResponseBody ResponseEntity<byte[]> makeReport() throws Exception {
+		// File file = reportRepository.makeReport();
+		Path path = Paths.get("D:/E-Books/7-habits-ebook.pdf");
+		byte[] buffer = Files.readAllBytes(path);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+		headers.setContentDispositionFormData("Content-Disposition", "output.pdf");
+		// byte[] buffer = new byte[(int) file.length()];
+		return new ResponseEntity<byte[]>(buffer, headers, HttpStatus.OK);
+	}
 }
