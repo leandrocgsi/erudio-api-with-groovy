@@ -12,6 +12,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -60,19 +61,23 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     	converters.add(converterResourceHttpMessageConverter());
         converters.add(converterJackson2Http());
+        converters.add(converterByteArray());
         super.configureMessageConverters(converters);
     }
+
+    @Bean
+    public ByteArrayHttpMessageConverter converterByteArray() {
+		return new ByteArrayHttpMessageConverter();
+	}
     
     @Bean
     public MappingJackson2HttpMessageConverter converterJackson2Http() {
-    	MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
-    	return converter;
+    	return new MappingJackson2HttpMessageConverter();
     }
     
     @Bean
     public ResourceHttpMessageConverter converterResourceHttpMessageConverter() {
-    	ResourceHttpMessageConverter converter = new ResourceHttpMessageConverter();
-    	return converter;
+    	return new ResourceHttpMessageConverter();
     }
     
     @Bean(name = "messageSource")
