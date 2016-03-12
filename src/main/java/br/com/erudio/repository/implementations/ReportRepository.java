@@ -1,8 +1,8 @@
 package br.com.erudio.repository.implementations;
 
-import java.io.File;
 import java.io.Serializable;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import br.com.erudio.repository.interfaces.IReportRepository;
@@ -14,11 +14,12 @@ public class ReportRepository implements IReportRepository, Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	Reporter reporter = new Reporter(); 
+	@Autowired
+	private Reporter reporter; 
 
 	@Override
-	public File makeReport() throws Exception {
-		return reporter.makeReport();
+	public byte[] makeReport() throws Exception {
+		return (byte[])reporter.makeReport();
 	}
 
 	

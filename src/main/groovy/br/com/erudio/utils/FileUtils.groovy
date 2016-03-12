@@ -23,6 +23,20 @@ class FileUtils {
 		fileDestinationStream << stream;
 		fileDestinationStream.close();
 	}
-	
-	
+
+	def getBytesFromFile(File file) {
+		InputStream is = null;
+		byte[] buffer = null;
+		try {
+			is = new FileInputStream(file);
+			buffer = new byte[is.available()];
+			is.read(buffer);
+			is.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		buffer;
+	}
 }

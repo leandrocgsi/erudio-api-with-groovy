@@ -1,9 +1,5 @@
 package br.com.erudio.entrypoint.v1;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +20,7 @@ import com.wordnik.swagger.annotations.ApiResponse;
 import com.wordnik.swagger.annotations.ApiResponses;
 
 import br.com.erudio.repository.interfaces.IReportRepository;
+import br.com.erudio.utils.FileUtils;
 
 @Controller
 @Secured("ROLE_USER")
@@ -33,16 +30,16 @@ public class ReportEntryPoint {
 
 	@Autowired
 	private IReportRepository reportRepository;
+	
+	FileUtils fileUtils = new FileUtils();
 
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ApiOperation(value = "Building a report in PDF!", notes = "Building a report in PDF!")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 500, message = "Houston we have a problem") })
 	public @ResponseBody HttpEntity<byte[]> makeReport(HttpServletResponse response) throws Exception {
-		// See this http://www.benashby.com/spring/2013/10/30/serving-large-files-spring-mvc.html to bigest files
-		// File file = reportRepository.makeReport();
-		Path path = Paths.get("D:/E-Books/7-habits-ebook.pdf");
-		byte[] buffer = Files.readAllBytes(path);
+//		See this http://www.benashby.com/spring/2013/10/30/serving-large-files-spring-mvc.html to bigest files
+		byte[] buffer = reportRepository.makeReport();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("application/pdf"));
 		headers.setContentDispositionFormData("Content-Disposition", "output.pdf");
