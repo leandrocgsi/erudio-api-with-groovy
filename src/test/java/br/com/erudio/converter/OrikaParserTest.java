@@ -1,34 +1,38 @@
 package br.com.erudio.converter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.erudio.mocks.PersonMock;
+import br.com.erudio.vo.PersonVO;
+
 public class OrikaParserTest {
 
-//    MockInputObject inputObject;
+    PersonMock inputObject;
 
     @Before
     public void setUp() {
-//        inputObject = new MockInputObject();
+    	inputObject = new PersonMock();
     }
 
     @Test
     public void parseObjectInputToObjectOutputTest() {
-//        OutputObject output = OrikaParser.parseObjectInputToObjectOutput(inputObject.mockInput(), OutputObject.class);
-//        assertEquals("Name Test", output.getName());
-//        assertEquals("Old City", output.getAddress().getTown());
+        PersonVO output = OrikaParser.parseObjectInputToObjectOutput(inputObject.mockPerson(1), PersonVO.class);
+        System.out.println(output.getAddresses().get(0).getPostalCode());
+        assertEquals("ONE PERSON 1", output.getName());
+        assertEquals("34700-370", output.getAddresses().get(0).getPostalCode());
 //        assertTrue(output.getAge() == 21);
     }
 
     @Test
     public void parserListObjectInputToObjectOutputTest() {
-//        List<OutputObject> output = OrikaParser.parserListObjectInputToObjectOutput(inputObject.mockInputList(), OutputObject.class);
-//        assertEquals("Name Test 2", output.get(0).getName());
+        List<PersonVO> output = OrikaParser.parserListObjectInputToObjectOutput(inputObject.mockPersonsList(9), PersonVO.class);
+//        System.out.println(output.get(0).getAddresses().get(0).getPostalCode());
+        assertEquals("ONE PERSON 1", output.get(0).getName());
 //        assertEquals("Old City", output.get(0).getAddress().getTown());
 //        assertTrue(output.get(0).getAge() == 22);
     }
