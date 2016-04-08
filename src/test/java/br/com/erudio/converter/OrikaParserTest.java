@@ -25,7 +25,7 @@ public class OrikaParserTest {
 
     @Test
     public void parsePersonEntityToPersonVOTest() {
-        PersonVO output = OrikaParser.parseObjectInputToObjectOutput(inputObject.mockPerson(1), PersonVO.class);
+        PersonVO output = ObjectParser.parseObjectInputToObjectOutput(inputObject.mockPerson(1), PersonVO.class);
         System.out.println(output.getAddresses().get(0).getPostalCode());
         assertEquals("ONE PERSON 1", output.getName());
         assertEquals("34700-370", output.getAddresses().get(0).getPostalCode());
@@ -33,7 +33,7 @@ public class OrikaParserTest {
 
     @Test
     public void parseListPersonsEntityToPersonsVOTest() {
-        List<PersonVO> persons = OrikaParser.parserListObjectInputToObjectOutput(inputObject.mockPersonsList(9), PersonVO.class);
+        List<PersonVO> persons = ObjectParser.parserListObjectInputToObjectOutput(inputObject.mockPersonsList(9), PersonVO.class);
         assertEquals("ONE PERSON 1", persons.get(0).getName());
         assertEquals("34700-370", persons.get(1).getAddresses().get(0).getPostalCode());
         assertEquals("34700-371", persons.get(2).getAddresses().get(1).getPostalCode());
@@ -42,7 +42,7 @@ public class OrikaParserTest {
     
     @Test
 	public void parsePersonEntityToPersonVOFromJSONTest(){
-        PersonVO output = OrikaParser.parseObjectInputToObjectOutput(mockPersonFromJSON(), PersonVO.class);
+        PersonVO output = ObjectParser.parseObjectInputToObjectOutput(mockPersonFromJSON(), PersonVO.class);
         System.out.println(output.getAddresses().get(0).getPostalCode());
         assertEquals("ONE PERSON 1", output.getName());
         assertEquals("34700-370", output.getAddresses().get(0).getPostalCode());
