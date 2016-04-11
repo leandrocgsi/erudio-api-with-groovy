@@ -72,7 +72,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 	
 	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
 		try {
-			return person.getPagedSearch(entityManager, "p", "Person");
+			return person.getPagedSearch("p", "Person");
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return null;

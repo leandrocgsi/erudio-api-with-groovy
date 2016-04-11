@@ -17,6 +17,7 @@ class GenericRepository<T> implements IGenericRepository<T>, Serializable {
     
     @PersistenceContext
     protected EntityManager entityManager;
+
     private Class<T> clazz;
 	
 	GenericRepository() { }

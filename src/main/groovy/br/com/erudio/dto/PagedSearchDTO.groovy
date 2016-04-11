@@ -2,7 +2,8 @@ package br.com.erudio.dto
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query
 
 import org.apache.commons.lang3.StringUtils
@@ -11,6 +12,9 @@ import org.apache.commons.lang3.StringUtils
 class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+
+    @PersistenceContext
+    protected EntityManager entityManager;
 	
 	Integer currentPage;
 	Integer pageSize;
@@ -84,24 +88,24 @@ class PagedSearchDTO<T extends Serializable> implements Serializable {
 		"select count(*) from ${entityName} ${alias} ";
 	}
 	
-	Long getTotal(EntityManager entityManager, String alias, String entityName) {
+	Long getTotal(String alias, String entityName) {
 		String select = getBaseSelectCount(alias, entityName) + getWhereAndParameters(alias);
 		Query query = entityManager.createQuery(select);
 		setParameters(query);
 		(Long)query.getSingleResult();
 	}
 	
-	Query getSearchQuery(EntityManager entityManager, String alias, String entityName) {
+	Query getSearchQuery(String alias, String entityName) {
 		Query query = entityManager.createQuery(getHQLQuery(alias, entityName));
 		setParameters(query);
 		query.setFirstResult((getCurrentPage() - 1) * getPageSize());
 		query.setMaxResults(getPageSize());
 	}
 	
-	PagedSearchDTO<T> getPagedSearch(EntityManager entityManager, String alias, String entityName) {
-		Query searchQuery = getSearchQuery(entityManager, alias, entityName);
+	PagedSearchDTO<T> getPagedSearch(String alias, String entityName) {
+		Query searchQuery = getSearchQuery(alias, entityName);
 		setList(searchQuery.getResultList());
-		setTotalResults(getTotal(entityManager, alias, entityName).intValue());
+		setTotalResults(getTotal(alias, entityName).intValue());
 		return this;
 	}
 }

@@ -26,23 +26,23 @@ public class QueryBuilder<T extends Serializable> implements Serializable {
 		query + '1 = 1 ';
 	}
 
-	private boolean entryIsEmpty(String k, Object v) {
-		return k != null && v != null && !StringUtils.isEmpty(k) && !StringUtils.isEmpty(v.toString());
+	Boolean isEmpty(String k, Object v) {
+		k && v && !v.toString().empty;
 	}
 	
-	public String getHQLQuery(String alias, String entityName) {
-		return getBaseSelect(alias, entityName) + getWhereAndParameters(alias) + getOrderBy(alias);
+	String getHQLQuery(String alias, String entityName) {
+		getBaseSelect(alias, entityName) + getWhereAndParameters(alias) + getOrderBy(alias);
 	}
 
-	public String getBaseSelect(String alias, String entityName) {
-		return "select " + alias + " from " + entityName + " " + alias + " ";
+	String getBaseSelect(String alias, String entityName) {
+		"select ${alias} from ${entityName} ${alias} ";
 	}
 
-	public String getBaseSelectCount(String alias, String entityName) {
-		return "select count(*) from " + entityName + " " + alias + " ";
+	String getBaseSelectCount(String alias, String entityName) {
+		"select count(*) from ${entityName} ${alias} ";
 	}
 	
-	public Integer getStart() {
-		return Integer.valueOf((pagedSearchVO.getCurrentPage() - 1) * pagedSearchVO.getPageSize());
+	Integer getStart() {
+		Integer.valueOf((getCurrentPage() - 1.intValue()) * getPageSize());
 	}
 }
