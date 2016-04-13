@@ -17,7 +17,7 @@ import com.wordnik.swagger.annotations.Api;
 import com.wordnik.swagger.annotations.ApiOperation;
 
 import br.com.erudio.converter.ObjectParser;
-import br.com.erudio.dto.PagedSearchDTO;
+import br.com.erudio.dto.PagedSearchVO;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.interfaces.IPersonRepository;
 import br.com.erudio.vo.PersonVO;
@@ -82,7 +82,7 @@ class PersonEntryPoint {
     }
 	
 	@RequestMapping(value = "/pagedSearch", method = RequestMethod.POST)
-    public @ResponseBody PagedSearchDTO<Person> buscaPaginada(@RequestBody PagedSearchDTO<Person> person) {
+    public @ResponseBody PagedSearchVO<Person> buscaPaginada(@RequestBody PagedSearchVO<Person> person) {
 		return personRepository.pagedSearch(person);
     }
 }

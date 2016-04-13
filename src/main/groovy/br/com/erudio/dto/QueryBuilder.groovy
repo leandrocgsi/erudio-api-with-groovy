@@ -3,8 +3,10 @@ package br.com.erudio.dto;
 import java.io.Serializable;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Repository;;
 
+@Repository
 public class QueryBuilder<T extends Serializable> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

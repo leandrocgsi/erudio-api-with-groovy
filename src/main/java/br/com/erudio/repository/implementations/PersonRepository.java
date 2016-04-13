@@ -1,5 +1,6 @@
 package br.com.erudio.repository.implementations;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,12 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.erudio.dto.PagedSearchDTO;
+import br.com.erudio.dto.PagedSearchVO;
+import br.com.erudio.dto.QueryBuilder;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.generic.GenericRepository;
 import br.com.erudio.repository.interfaces.IPersonRepository;
@@ -20,6 +23,9 @@ import br.com.erudio.repository.interfaces.IPersonRepository;
 public class PersonRepository extends GenericRepository<Person> implements IPersonRepository{
 
 	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private PagedSearchDTO2<Person> pagedSearchDTO2; 
 
 	public PersonRepository() {
 		super(Person.class);
@@ -70,9 +76,9 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
         }
 	}
 	
-	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
+	public PagedSearchVO<Person> pagedSearch(PagedSearchVO<Person> person) {
 		try {
-			return person.getPagedSearch("p", "Person");
+			return pagedSearchDTO2.getPagedSearch("p", "Person", person);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return null;
