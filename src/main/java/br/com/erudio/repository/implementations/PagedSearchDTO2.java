@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.erudio.dto.PagedSearchVO;
-import br.com.erudio.dto.QueryBuilder;
 import br.com.erudio.model.Person;
+import br.com.erudio.repository.querybuilder.QueryBuilder;
 
 @Repository
 @Transactional(readOnly = true)

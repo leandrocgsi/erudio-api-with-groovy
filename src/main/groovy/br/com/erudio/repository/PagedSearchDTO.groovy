@@ -1,4 +1,4 @@
-package br.com.erudio.dto
+package br.com.erudio.repository
 
 import java.util.List;
 

@@ -1,10 +1,12 @@
-package br.com.erudio.dto;
+package br.com.erudio.repository.querybuilder;
 
 import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils
-import org.springframework.stereotype.Repository;;
+import org.springframework.stereotype.Repository
+
+import br.com.erudio.dto.PagedSearchVO;;;
 
 @Repository
 public class QueryBuilder<T extends Serializable> implements Serializable {

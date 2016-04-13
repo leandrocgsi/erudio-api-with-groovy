@@ -10,8 +10,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.com.erudio.dto.PagedSearchDTO;
 import br.com.erudio.model.Person;
+import br.com.erudio.repository.PagedSearchDTO;
 
 public class PagedSearchDTOTest {
 	
