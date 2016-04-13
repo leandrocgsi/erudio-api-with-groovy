@@ -87,28 +87,6 @@ public class PagedSearchDTOTest {
         assertEquals(queryBuilder.withVO(dto).getOrderBy("p"), " order by p.name asc");
     }
     
-    @Test
-    public void getPageSizeTest() {
-        assertEquals(dto.getPageSize(), (Integer)10);
-    }
-    
-    @Test
-    public void getCurrentPageTest() {
-        assertEquals(dto.getCurrentPage(), (Integer)1);
-    }
-    
-    @Test
-    public void getPageSizeNullTest() {
-        dto.setPageSize(null);
-        assertEquals(dto.getPageSize(), (Integer)0);
-    }
-    
-    @Test
-    public void getCurrentPageNullTest() {
-        dto.setCurrentPage(null);
-        assertEquals(dto.getCurrentPage(), (Integer)0);
-    }
-    
     @SuppressWarnings("unchecked")
     public PagedSearchVO<Person> mockDTOFromJSON(){
         PagedSearchVO<Person> dtoFromJSON = new PagedSearchVO<>();
