@@ -1,4 +1,5 @@
-#Erudio API with SpringSecurity, JPA, Groovy and many other technologies
+Erudio API with SpringSecurity, JPA, Groovy and many other technologies
+-----------------------------------------------------------------------
 
 *This project has been implemented based in* --> [Spring MVC 4 Quickstart Maven Archetype](https://github.com/kolorobot/spring-mvc-quickstart-archetype)
 
