@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.erudio.dto.PagedSearchVO;
 import br.com.erudio.model.Person;
+import br.com.erudio.repository.PersonPagedSearchRepository;
 import br.com.erudio.repository.generic.GenericRepository;
 import br.com.erudio.repository.interfaces.IPersonRepository;
 import br.com.erudio.repository.querybuilder.QueryBuilder;
@@ -25,7 +26,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private PagedSearchDTO2<Person> pagedSearchDTO2; 
+	private PersonPagedSearchRepository<Person> personPagedSearchRepository; 
 
 	public PersonRepository() {
 		super(Person.class);
@@ -78,7 +79,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 	
 	public PagedSearchVO<Person> pagedSearch(PagedSearchVO<Person> person) {
 		try {
-			return pagedSearchDTO2.getPagedSearch("p", "Person", person);
+			return personPagedSearchRepository.getPagedSearch("p", "Person", person);
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			return null;
