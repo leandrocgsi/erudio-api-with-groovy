@@ -6,9 +6,11 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query
 
-import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-
+@Repository
+@Transactional(readOnly = true)
 class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
