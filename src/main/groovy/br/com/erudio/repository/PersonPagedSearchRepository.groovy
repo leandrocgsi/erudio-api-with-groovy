@@ -33,14 +33,14 @@ class PersonPagedSearchRepository<T extends Serializable> implements Serializabl
     }
     
     Long getTotal(String alias, String entityName, PagedSearchDTO<Person> person) {
-        String select = queryBuilder.withVO(person).getBaseSelectCount(alias, entityName) + queryBuilder.withVO(person).getWhereAndParameters(alias);
+        String select = queryBuilder.withDTO(person).getBaseSelectCount(alias, entityName) + queryBuilder.withDTO(person).getWhereAndParameters(alias);
         Query query = entityManager.createQuery(select);
         setParameters(query, person.getFilters());
         (Long)query.getSingleResult();
     }
     
     Query getSearchQuery(String alias, String entityName, PagedSearchDTO<Person> person) {
-        String select = queryBuilder.withVO(person).getHQLQuery(alias, entityName);
+        String select = queryBuilder.withDTO(person).getHQLQuery(alias, entityName);
         Query query = entityManager.createQuery(select);
         setParameters(query, person.getFilters());
         query.setFirstResult((person.getCurrentPage() - 1) * person.getPageSize());

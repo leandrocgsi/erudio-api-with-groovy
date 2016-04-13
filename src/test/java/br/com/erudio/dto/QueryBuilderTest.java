@@ -2,9 +2,11 @@ package br.com.erudio.dto;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,25 +24,78 @@ public class QueryBuilderTest {
     }
     
     @Test
-    public void getPageSizeTest() {
-        assertEquals((Integer)10, dto.getPageSize());
+    public void getBaseSelectTest() {
+        String baseSelect = "select p from Person p ";
+        assertEquals(baseSelect, queryBuilder.withDTO(dto).getBaseSelect("p", "Person"));
     }
     
     @Test
-    public void getCurrentPageTest() {
-        assertEquals((Integer)1, dto.getCurrentPage());
+    public void getStartTest() {
+        assertEquals((Integer)0, queryBuilder.withDTO(dto).getStart());
     }
     
     @Test
-    public void getPageSizeNullTest() {
-        dto.setPageSize(null);
-        assertEquals((Integer)0, dto.getPageSize());
+    public void getBaseSelectCount() {
+        String baseSelect = "select count(*) from Person p ";
+        assertEquals(baseSelect, queryBuilder.withDTO(dto).getBaseSelectCount("p", "Person"));
     }
     
     @Test
-    public void getCurrentPageNullTest() {
-        dto.setCurrentPage(null);
-        assertEquals((Integer)0, dto.getCurrentPage());
+    public void getWhereAndParametersTest() {
+        String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
+        assertEquals(whereClause, queryBuilder.withDTO(dto).getWhereAndParameters("p"));
+    }
+    
+    @Test
+    public void getWhereAndParametersWithBlankStringKeyTest() {
+        Map<String, Object> filters = mockFilters();
+        filters.put("", "LEANDRO");
+        dto.setFilters(filters);
+        String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
+        assertEquals(whereClause, queryBuilder.withDTO(dto).getWhereAndParameters("p"));
+    }
+
+    @Test
+    public void getWhereAndParametersWithBlankStringValueTest() {
+        Map<String, Object> filters = new HashMap<String, Object>();
+        filters.put("name", "");
+        dto.setFilters(filters);
+        String whereClause = " where 1 = 1 ";
+        assertEquals(whereClause, queryBuilder.withDTO(dto).getWhereAndParameters("p"));
+    }
+    
+    @Test
+    public void getHQLQueryTest() {
+        String selectWithParameters = "select p from Person p"
+                + "  where p.phone = :phone and"
+                + " p.name = :name and"
+                + " p.email = :email and 1 = 1 "
+                + " order by p.name asc";
+        assertEquals(selectWithParameters, queryBuilder.withDTO(dto).getHQLQuery("p", "Person"));
+    }
+    
+    @Test
+    public void getHQLQueryTestWithDTOFromJSON() {
+        String selectWithParameters = "select p from Person p"
+                + "  where 1 = 1 "
+                + " order by p.name asc";
+        assertEquals(selectWithParameters, queryBuilder.withDTO(mockDTOFromJSON()).getHQLQuery("p", "Person"));
+    }
+    
+    @Test
+    public void getOrderByTest() {
+        assertEquals(" order by p.name asc", queryBuilder.withDTO(dto).getOrderBy("p"));
+    }
+    
+    @SuppressWarnings("unchecked")
+    public PagedSearchDTO<Person> mockDTOFromJSON(){
+        PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<>();
+        try {
+            dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchDTO.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dtoFromJSON;
     }
     
     public PagedSearchDTO<Person> mockDTO(){

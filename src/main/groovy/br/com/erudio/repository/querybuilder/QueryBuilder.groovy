@@ -13,20 +13,20 @@ public class QueryBuilder<T extends Serializable> implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    private PagedSearchDTO<T> pagedSearchVO = new PagedSearchDTO<T>();
+    private PagedSearchDTO<T> pagedSearchDTO = new PagedSearchDTO<T>();
     
-    public QueryBuilder<T> withVO(PagedSearchDTO<T> pagedSearchVO) {
-        this.pagedSearchVO = pagedSearchVO;
+    public QueryBuilder<T> withDTO(PagedSearchDTO<T> pagedSearchVO) {
+        this.pagedSearchDTO = pagedSearchVO;
         return this;
     }
     
     String getOrderBy(String alias) {
-        " order by ${alias}.${pagedSearchVO.sortFields} ${pagedSearchVO.sortDirections}";
+        " order by ${alias}.${pagedSearchDTO.sortFields} ${pagedSearchDTO.sortDirections}";
     }
     
     String getWhereAndParameters(String alias) {
         def query = ' where ';
-        pagedSearchVO.filters.each{ k, v -> (isEmpty(k, v)) ? query = query + "${alias}.${k} = :${k} and " : "" }
+        pagedSearchDTO.filters.each{ k, v -> (isEmpty(k, v)) ? query = query + "${alias}.${k} = :${k} and " : "" }
         query + '1 = 1 ';
     }
 
@@ -47,6 +47,6 @@ public class QueryBuilder<T extends Serializable> implements Serializable {
     }
     
     Integer getStart() {
-        Integer.valueOf((pagedSearchVO.getCurrentPage() - 1.intValue()) * pagedSearchVO.getPageSize());
+        Integer.valueOf((pagedSearchDTO.getCurrentPage() - 1.intValue()) * pagedSearchDTO.getPageSize());
     }
 }

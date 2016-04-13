@@ -2,21 +2,17 @@ package br.com.erudio.dto;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 
 import br.com.erudio.model.Person;
-import br.com.erudio.repository.querybuilder.QueryBuilder;
 
 public class PagedSearchDTOTest {
     
     PagedSearchDTO<Person> dto = new PagedSearchDTO<Person>();
-    QueryBuilder<Person> queryBuilder = new QueryBuilder<Person>();
     
     @Before
     public void setup() {
@@ -24,78 +20,25 @@ public class PagedSearchDTOTest {
     }
     
     @Test
-    public void getBaseSelectTest() {
-        String baseSelect = "select p from Person p ";
-        assertEquals(queryBuilder.withVO(dto).getBaseSelect("p", "Person"), baseSelect);
+    public void getPageSizeTest() {
+        assertEquals((Integer)10, dto.getPageSize());
     }
     
     @Test
-    public void getStartTest() {
-        assertEquals(queryBuilder.withVO(dto).getStart(), (Integer)0);
+    public void getCurrentPageTest() {
+        assertEquals((Integer)1, dto.getCurrentPage());
     }
     
     @Test
-    public void getBaseSelectCount() {
-        String baseSelect = "select count(*) from Person p ";
-        assertEquals(queryBuilder.withVO(dto).getBaseSelectCount("p", "Person"), baseSelect);
+    public void getPageSizeNullTest() {
+        dto.setPageSize(null);
+        assertEquals((Integer)0, dto.getPageSize());
     }
     
     @Test
-    public void getWhereAndParametersTest() {
-        String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
-        assertEquals(whereClause, queryBuilder.withVO(dto).getWhereAndParameters("p"));
-    }
-    
-    @Test
-    public void getWhereAndParametersWithBlankStringKeyTest() {
-        Map<String, Object> filters = mockFilters();
-        filters.put("", "LEANDRO");
-        dto.setFilters(filters);
-        String whereClause = " where p.phone = :phone and p.name = :name and p.email = :email and 1 = 1 ";
-        assertEquals(queryBuilder.withVO(dto).getWhereAndParameters("p"), whereClause);
-    }
-
-    @Test
-    public void getWhereAndParametersWithBlankStringValueTest() {
-        Map<String, Object> filters = new HashMap<String, Object>();
-        filters.put("name", "");
-        dto.setFilters(filters);
-        String whereClause = " where 1 = 1 ";
-        assertEquals(queryBuilder.withVO(dto).getWhereAndParameters("p"), whereClause);
-    }
-    
-    @Test
-    public void getHQLQueryTest() {
-        String selectWithParameters = "select p from Person p"
-                + "  where p.phone = :phone and"
-                + " p.name = :name and"
-                + " p.email = :email and 1 = 1 "
-                + " order by p.name asc";
-        assertEquals(selectWithParameters, queryBuilder.withVO(dto).getHQLQuery("p", "Person"));
-    }
-    
-    @Test
-    public void getHQLQueryTestWithDTOFromJSON() {
-        String selectWithParameters = "select p from Person p"
-                + "  where 1 = 1 "
-                + " order by p.name asc";
-        assertEquals(selectWithParameters, queryBuilder.withVO(mockDTOFromJSON()).getHQLQuery("p", "Person"));
-    }
-    
-    @Test
-    public void getOrderByTest() {
-        assertEquals(queryBuilder.withVO(dto).getOrderBy("p"), " order by p.name asc");
-    }
-    
-    @SuppressWarnings("unchecked")
-    public PagedSearchDTO<Person> mockDTOFromJSON(){
-        PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<>();
-        try {
-            dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchDTO.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return dtoFromJSON;
+    public void getCurrentPageNullTest() {
+        dto.setCurrentPage(null);
+        assertEquals((Integer)0, dto.getCurrentPage());
     }
     
     public PagedSearchDTO<Person> mockDTO(){
@@ -118,5 +61,4 @@ public class PagedSearchDTOTest {
         filters.put(null, "COSTA");
         return filters;
     }
-
 }
