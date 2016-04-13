@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 
-import br.com.erudio.dto.PagedSearchVO
+import br.com.erudio.dto.PagedSearchDTO
 import br.com.erudio.model.Person
 import br.com.erudio.repository.querybuilder.QueryBuilder
 
@@ -32,14 +32,14 @@ class PersonPagedSearchRepository<T extends Serializable> implements Serializabl
         k && v && !v.toString().empty;
     }
     
-    Long getTotal(String alias, String entityName, PagedSearchVO<Person> person) {
+    Long getTotal(String alias, String entityName, PagedSearchDTO<Person> person) {
         String select = queryBuilder.withVO(person).getBaseSelectCount(alias, entityName) + queryBuilder.withVO(person).getWhereAndParameters(alias);
         Query query = entityManager.createQuery(select);
         setParameters(query, person.getFilters());
         (Long)query.getSingleResult();
     }
     
-    Query getSearchQuery(String alias, String entityName, PagedSearchVO<Person> person) {
+    Query getSearchQuery(String alias, String entityName, PagedSearchDTO<Person> person) {
         String select = queryBuilder.withVO(person).getHQLQuery(alias, entityName);
         Query query = entityManager.createQuery(select);
         setParameters(query, person.getFilters());
@@ -48,10 +48,10 @@ class PersonPagedSearchRepository<T extends Serializable> implements Serializabl
         query;
     }
     
-    PagedSearchVO<Person> getPagedSearch(String alias, String entityName, PagedSearchVO<Person> person) {
+    PagedSearchDTO<Person> getPagedSearch(String alias, String entityName, PagedSearchDTO<Person> person) {
         Query searchQuery = getSearchQuery(alias, entityName, person);
         person.setList(searchQuery.getResultList());
         person.setTotalResults(getTotal(alias, entityName, person).intValue());
-        (PagedSearchVO<Person>) person;
+        (PagedSearchDTO<Person>) person;
     }
 }

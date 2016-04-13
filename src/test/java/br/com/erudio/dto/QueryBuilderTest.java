@@ -13,7 +13,7 @@ import br.com.erudio.repository.querybuilder.QueryBuilder;
 
 public class QueryBuilderTest {
     
-    PagedSearchVO<Person> dto = new PagedSearchVO<Person>();
+    PagedSearchDTO<Person> dto = new PagedSearchDTO<Person>();
     QueryBuilder<Person> queryBuilder = new QueryBuilder<Person>();
     
     @Before
@@ -43,7 +43,7 @@ public class QueryBuilderTest {
         assertEquals((Integer)0, dto.getCurrentPage());
     }
     
-    public PagedSearchVO<Person> mockDTO(){
+    public PagedSearchDTO<Person> mockDTO(){
         dto.setCurrentPage(1);
         dto.setPageSize(10);
         dto.setSortFields("name");

@@ -6,16 +6,16 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Repository
 
-import br.com.erudio.dto.PagedSearchVO;;;
+import br.com.erudio.dto.PagedSearchDTO;
 
 @Repository
 public class QueryBuilder<T extends Serializable> implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    private PagedSearchVO<T> pagedSearchVO = new PagedSearchVO<T>();
+    private PagedSearchDTO<T> pagedSearchVO = new PagedSearchDTO<T>();
     
-    public QueryBuilder<T> withVO(PagedSearchVO<T> pagedSearchVO) {
+    public QueryBuilder<T> withVO(PagedSearchDTO<T> pagedSearchVO) {
         this.pagedSearchVO = pagedSearchVO;
         return this;
     }

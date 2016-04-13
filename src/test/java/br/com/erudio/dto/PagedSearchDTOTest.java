@@ -15,7 +15,7 @@ import br.com.erudio.repository.querybuilder.QueryBuilder;
 
 public class PagedSearchDTOTest {
     
-    PagedSearchVO<Person> dto = new PagedSearchVO<Person>();
+    PagedSearchDTO<Person> dto = new PagedSearchDTO<Person>();
     QueryBuilder<Person> queryBuilder = new QueryBuilder<Person>();
     
     @Before
@@ -88,17 +88,17 @@ public class PagedSearchDTOTest {
     }
     
     @SuppressWarnings("unchecked")
-    public PagedSearchVO<Person> mockDTOFromJSON(){
-        PagedSearchVO<Person> dtoFromJSON = new PagedSearchVO<>();
+    public PagedSearchDTO<Person> mockDTOFromJSON(){
+        PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<>();
         try {
-            dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchVO.class);
+            dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchDTO.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return dtoFromJSON;
     }
     
-    public PagedSearchVO<Person> mockDTO(){
+    public PagedSearchDTO<Person> mockDTO(){
         dto.setCurrentPage(1);
         dto.setPageSize(10);
         dto.setSortFields("name");

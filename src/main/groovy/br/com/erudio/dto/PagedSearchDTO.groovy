@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-class PagedSearchVO<T extends Serializable> implements Serializable {
+class PagedSearchDTO<T extends Serializable> implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -16,16 +16,16 @@ class PagedSearchVO<T extends Serializable> implements Serializable {
 	Map<String, Object> filters;
 	List<T> list;
 
-	PagedSearchVO() {}
+	PagedSearchDTO() {}
 
-	PagedSearchVO(Integer currentPage, Integer pageSize, String sortFields, String sortDirections) {
+	PagedSearchDTO(Integer currentPage, Integer pageSize, String sortFields, String sortDirections) {
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		this.sortFields = sortFields;
 		this.sortDirections = sortDirections;
 	}
 
-	PagedSearchVO(Integer currentPage, Integer pageSize, String sortFields, String sortDirections, Map<String, Object> filters) {
+	PagedSearchDTO(Integer currentPage, Integer pageSize, String sortFields, String sortDirections, Map<String, Object> filters) {
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		this.sortFields = sortFields;
@@ -33,7 +33,7 @@ class PagedSearchVO<T extends Serializable> implements Serializable {
 		this.filters = filters;
 	}
 	
-	PagedSearchVO(Integer currentPage, String sortFields, String sortDirections) {
+	PagedSearchDTO(Integer currentPage, String sortFields, String sortDirections) {
 		this(currentPage, Integer.valueOf(10), sortFields, sortDirections);
 	}
 	

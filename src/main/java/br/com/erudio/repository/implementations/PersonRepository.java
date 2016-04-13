@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.erudio.dto.PagedSearchVO;
+import br.com.erudio.dto.PagedSearchDTO;
 import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonPagedSearchRepository;
 import br.com.erudio.repository.generic.GenericRepository;
@@ -77,7 +77,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
         }
 	}
 	
-	public PagedSearchVO<Person> pagedSearch(PagedSearchVO<Person> person) {
+	public PagedSearchDTO<Person> pagedSearch(PagedSearchDTO<Person> person) {
 		try {
 			return personPagedSearchRepository.getPagedSearch("p", "Person", person);
 		} catch (PersistenceException e) {
