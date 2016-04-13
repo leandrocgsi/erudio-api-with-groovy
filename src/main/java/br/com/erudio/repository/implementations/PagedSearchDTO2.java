@@ -29,7 +29,7 @@ public class PagedSearchDTO2<T extends Serializable> implements Serializable {
     protected EntityManager entityManager;
 	
     /*	The Groovy Way
-	void setParameters(Query query) {
+	void setParameters(Query query, Map<String, Object> filters) {
 		filters.each{ k, v -> (isEmpty(k, v)) ? query.setParameter("${k}", v) : ""}
 	}*/
     public void setParameters(Query query, Map<String, Object> filters) {
