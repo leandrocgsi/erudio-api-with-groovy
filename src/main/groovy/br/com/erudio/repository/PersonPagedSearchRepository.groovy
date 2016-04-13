@@ -1,7 +1,8 @@
 package br.com.erudio.repository
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.List
+import java.util.Map;
 
 import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext;
@@ -27,7 +28,7 @@ class PersonPagedSearchRepository<T extends Serializable> implements Serializabl
     @PersistenceContext
     protected EntityManager entityManager;
 
-    void setParameters(Query query) {
+    void setParameters(Query query, Map<String, Object> filters) {
 		filters.each{ k, v -> (isEmpty(k, v)) ? query.setParameter("${k}", v) : ""}
 	}
 	
