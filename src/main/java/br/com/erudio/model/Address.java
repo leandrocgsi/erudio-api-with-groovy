@@ -1,13 +1,11 @@
 package br.com.erudio.model;
 
-
 import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,7 +15,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@SuppressWarnings("deprecation")
 @Entity
 @Table(name="address")
 public class Address implements Serializable {

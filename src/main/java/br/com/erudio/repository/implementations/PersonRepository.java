@@ -1,6 +1,5 @@
 package br.com.erudio.repository.implementations;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +16,6 @@ import br.com.erudio.model.Person;
 import br.com.erudio.repository.PersonPagedSearchRepository;
 import br.com.erudio.repository.generic.GenericRepository;
 import br.com.erudio.repository.interfaces.IPersonRepository;
-import br.com.erudio.repository.querybuilder.QueryBuilder;
-
 
 @Repository
 public class PersonRepository extends GenericRepository<Person> implements IPersonRepository{
