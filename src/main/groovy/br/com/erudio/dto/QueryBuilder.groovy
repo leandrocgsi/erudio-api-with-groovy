@@ -19,12 +19,12 @@ public class QueryBuilder<T extends Serializable> implements Serializable {
 	}
 	
 	String getOrderBy(String alias) {
-		" order by ${alias}.${sortFields} ${sortDirections}";
+		" order by ${alias}.${pagedSearchVO.sortFields} ${pagedSearchVO.sortDirections}";
 	}
 	
 	String getWhereAndParameters(String alias) {
 		def query = ' where ';
-		filters.each{ k, v -> (isEmpty(k, v)) ? query = query + "${alias}.${k} = :${k} and " : "" }
+		pagedSearchVO.filters.each{ k, v -> (isEmpty(k, v)) ? query = query + "${alias}.${k} = :${k} and " : "" }
 		query + '1 = 1 ';
 	}
 

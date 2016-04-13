@@ -23,7 +23,7 @@ public class PagedSearchDTO2<T extends Serializable> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private QueryBuilder<Serializable> queryBuilder; 
+	private QueryBuilder<Person> queryBuilder; 
 
     @PersistenceContext
     protected EntityManager entityManager;
@@ -50,15 +50,18 @@ public class PagedSearchDTO2<T extends Serializable> implements Serializable {
 		return k != null && v != null && !StringUtils.isEmpty(k) && !StringUtils.isEmpty(v.toString());
 	}
 	
-	private Long getTotal(String alias, String entityName, Map<String, Object> filters) {
-		String select = queryBuilder.getBaseSelectCount(alias, entityName) + queryBuilder.getWhereAndParameters(alias);
+	private Long getTotal(String alias, String entityName, PagedSearchVO<Person> person) {
+		String select = queryBuilder.withVO(person).getBaseSelectCount(alias, entityName) + queryBuilder.withVO(person).getWhereAndParameters(alias);
+		System.out.println(select);
 		Query query = entityManager.createQuery(select);
-		setParameters(query, filters);
+		setParameters(query, person.getFilters());
 		return (Long)query.getSingleResult();
 	}
 	
 	private Query getSearchQuery(String alias, String entityName, PagedSearchVO<Person> person) {
-		Query query = entityManager.createQuery(queryBuilder.getHQLQuery(alias, entityName));
+		String hqlQuery = queryBuilder.withVO(person).getHQLQuery(alias, entityName);
+		System.out.println(hqlQuery);
+		Query query = entityManager.createQuery(hqlQuery);
 		setParameters(query, person.getFilters());
 		query.setFirstResult((person.getCurrentPage() - 1) * person.getPageSize());
 		query.setMaxResults(person.getPageSize());
@@ -69,7 +72,7 @@ public class PagedSearchDTO2<T extends Serializable> implements Serializable {
 	public PagedSearchVO<Person> getPagedSearch(String alias, String entityName, PagedSearchVO<Person> person) {
 		Query searchQuery = getSearchQuery(alias, entityName, person);
 		person.setList(searchQuery.getResultList());
-		person.setTotalResults(getTotal(alias, entityName, person.getFilters()).intValue());
+		person.setTotalResults(getTotal(alias, entityName, person).intValue());
 		return (PagedSearchVO<Person>) person;
 	}
 }
