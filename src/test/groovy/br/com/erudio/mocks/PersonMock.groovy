@@ -15,7 +15,7 @@ import br.com.erudio.model.State;
 class PersonMock {
 	
 	ArrayList<Person> mockPersonsList(Integer quantity) {
-		ArrayList<Person> persons = new ArrayList<>();
+		ArrayList<Person> persons = new ArrayList<Person>();
 		for (int i = 0; i < quantity; i++) persons.add(mockPerson(i));
 		persons;
 	}
@@ -38,7 +38,7 @@ class PersonMock {
 	}
 
 	List<Address> mockAddresses(int i) {
-		ArrayList<Address> addresses = new ArrayList<>();
+		ArrayList<Address> addresses = new ArrayList<Address>();
 		for (int j = 0; j < i; j++) addresses.add(mockAddress(j));
 		addresses;
 	}

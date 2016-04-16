@@ -89,7 +89,7 @@ public class QueryBuilderTest {
     
     @SuppressWarnings("unchecked")
     public PagedSearchDTO<Person> mockDTOFromJSON(){
-        PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<>();
+        PagedSearchDTO<Person> dtoFromJSON = new PagedSearchDTO<Person>();
         try {
             dtoFromJSON = new ObjectMapper().readValue(PagedSearchDTOMock.PAGED_SEARCH_DTO_JSON, PagedSearchDTO.class);
         } catch (IOException e) {

@@ -59,13 +59,13 @@ public class OrikaParserTest {
 	}
 	
 	public ArrayList<PersonVO> mockPersonsFromJSON(){
-//		ArrayList<PersonVO> dtoFromJSON = new ArrayList<>();
+//		ArrayList<PersonVO> dtoFromJSON = new ArrayList<PersonVO>();
 //		try {
 //			dtoFromJSON = new ObjectMapper().readValue(PersonsMockFromJSON.PERSONS, PersonVO.class);
 //		} catch (IOException e) {
 //			e.printStackTrace();
 //		}
-		return new ArrayList<>();
+		return new ArrayList<PersonVO>();
 	}
     
 }
