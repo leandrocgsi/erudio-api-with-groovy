@@ -13,7 +13,6 @@ The project is a Maven archetype for Spring MVC 4 web application.
 Generated project characteristics
 -------------------------
 * No-xml Spring MVC 4 web application (except named queries)
-* Thymeleaf, Bootstrap
 * JPA (Hibernate/HSQLDB/Spring Data JPA)
 * MongoDB (Spring Data Mongo)
 * JUnit/Mockito
