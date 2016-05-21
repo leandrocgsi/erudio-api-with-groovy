@@ -23,7 +23,6 @@ public class CityRepository extends GenericRepository<City> implements ICityRepo
 		super(City.class);
 	}
 	
-	@Override
 	@Transactional
 	public void deleteById(Integer id) {
         try {

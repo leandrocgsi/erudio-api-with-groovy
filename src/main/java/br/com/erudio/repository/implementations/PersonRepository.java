@@ -7,6 +7,8 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.validation.ConstraintViolationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,8 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 
 	private static final long serialVersionUID = 1L;
 	
+	private static final Logger logger = LoggerFactory.getLogger(PersonRepository.class);
+	
 	@Autowired
 	private PersonPagedSearchRepository<Person> personPagedSearchRepository; 
 
@@ -29,38 +33,34 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 		super(Person.class);
 	}
 	
-	@Override
 	public List<Person> findAll() {
 		try {
 			List<Person> persons = (List<Person>) entityManager.createNamedQuery("Person.findAllPersons", Person.class).getResultList();
 			return persons;
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return new ArrayList<Person>();
 		}
 	}
 
-	@Override
 	public Person findByName(String name) {
 		try {
 			return entityManager.createNamedQuery("Person.findPersonByName", Person.class).setParameter("name", name).getSingleResult();
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return new Person();
 		} 
 	}
 
-	@Override
 	public Person findById(Integer id) {
 		try {
 			return entityManager.createNamedQuery("Person.findPersonById", Person.class).setParameter("idPerson", id).getSingleResult();
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return new Person();
 		}
 	}
 
-	@Override
 	@Transactional
 	public void deleteById(Integer id) {
 		try {
@@ -78,7 +78,7 @@ public class PersonRepository extends GenericRepository<Person> implements IPers
 		try {
 			return personPagedSearchRepository.getPagedSearch("p", "Person", person);
 		} catch (PersistenceException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 			return null;
 		}
     }

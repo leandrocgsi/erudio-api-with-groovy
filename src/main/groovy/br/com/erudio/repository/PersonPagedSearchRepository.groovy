@@ -4,6 +4,7 @@ import javax.persistence.EntityManager
 import javax.persistence.PersistenceContext
 import javax.persistence.Query
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -11,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional
 import br.com.erudio.dto.PagedSearchDTO
 import br.com.erudio.model.Person
 import br.com.erudio.repository.querybuilder.QueryBuilder
+import br.com.erudio.services.implementations.PersonServiceImpl;
 
 @Repository
 @Transactional(readOnly = true)
 class PersonPagedSearchRepository<T extends Serializable> implements Serializable {
+	
+	private static final Logger logger = Logger.getLogger(PersonServiceImpl.class);
     
     private static final long serialVersionUID = 1L;
     
@@ -50,7 +54,8 @@ class PersonPagedSearchRepository<T extends Serializable> implements Serializabl
     
     PagedSearchDTO<Person> getPagedSearch(String alias, String entityName, PagedSearchDTO<Person> person) {
         Query searchQuery = getSearchQuery(alias, entityName, person);
-        person.setList(searchQuery.getResultList());
+        def persons = searchQuery.getResultList()
+        person.setList(persons);
         person.setTotalResults(getTotal(alias, entityName, person).intValue());
         (PagedSearchDTO<Person>) person;
     }

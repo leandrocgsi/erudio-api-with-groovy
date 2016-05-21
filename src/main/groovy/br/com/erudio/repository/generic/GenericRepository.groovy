@@ -1,19 +1,21 @@
 package br.com.erudio.repository.generic;
 
-import java.io.Serializable;
+import javax.persistence.EntityManager
+import javax.persistence.PersistenceContext
+import javax.persistence.Query
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Repository
+import org.springframework.transaction.annotation.Transactional
 
 @Repository
 @Transactional(readOnly = true)
 class GenericRepository<T> implements IGenericRepository<T>, Serializable {
 
     private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = LoggerFactory.getLogger(GenericRepository.class);
     
     @PersistenceContext
     protected EntityManager entityManager;
