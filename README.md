@@ -21,6 +21,16 @@ Generated project characteristics
 * Swagger
 * Groovy
 
+How to get this project
+----------------
+
+You can execute following command or as you prefer [download zip here](https://github.com/leandrocgsi/erudio-api-with-groovy/archive/master.zip) and import in your favourite IDE.
+
+```sh
+git clone https://github.com/leandrocgsi/erudio-api-with-groovy.git
+```
+
+
 Run the project
 ----------------
 
