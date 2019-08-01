@@ -3,6 +3,11 @@ language: java
 before_install:
     - sudo apt-get update
     - sudo apt-get install groovy
-
+sudo: required
+install: true
+script: mvn clean package -DskipTests=true
+sudo: required
 jdk:
-  - oraclejdk8
+  - oraclejdk9
+notifications:
+  email: false
